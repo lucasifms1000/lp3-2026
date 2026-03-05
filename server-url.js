@@ -4,7 +4,7 @@
  * http://127.0.0.1:3000/?nome=Lucas&sobrenome=Tavares
  */
 
-//importação dos pacotes
+//importação dos pacotes nativos
 const http = require('http');
 const url = require('url');
 
