@@ -17,11 +17,20 @@ require('dotenv').config();
 const hostname = process.env.APP_HOST;
 const port = process.env.APP_PORT;
 
+//importando as informações das rotas cliente
+const clienteRotas = require('./routes/cliente');
+
 //Definição de rota raiz "/"
 //Configuração do servidor
 app.get('/', (req, res) => {
     res.status(200).send('Servidor API REST.');
 });
+
+//Indica que o servidor irá responder com dados Json
+app.use(express.json());
+
+//Expor as rotas do servidor
+app.use('/cliente', clienteRotas);
 
 //Inicio do servidor
 app.listen(port, hostname, async () =>{
