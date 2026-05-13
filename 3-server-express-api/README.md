@@ -1,7 +1,10 @@
 Comandos básicos para iniciar o servidor
 
 Iniciar um projeto imediatamente com dados padrões
-npm install 
+npm install
+npm install pg
+npm install express
+npm install dotenv
 
 Reiniciar o servidor automaticamente - Nodemon
 Para rodar servidores sem a necessidade de ficar intorrempondo e reinciando manualmente, pode-se utilizar o Nodemon. Para isso você deverá instalar o nodemon na pasta do projeto.
@@ -10,7 +13,7 @@ npm install --save-dev nodemon
 Em seguida deverá alterar o arquivo package.json.
 
 "scripts": {
-  "dev": "nodemon <nome_do_arquivo.js>"
+  "dev": "nodemon app.js"
 },
 Feito isso basta executar o seguinte comando.
 
