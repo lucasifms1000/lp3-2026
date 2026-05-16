@@ -1,7 +1,7 @@
 Comandos básicos para iniciar o servidor
 
 Iniciar um projeto imediatamente com dados padrões
-npm install
+npm init -y
 npm install pg
 npm install express
 npm install dotenv

@@ -11,7 +11,7 @@ const db = require('../db/connect');
 //ROTA GET
 routes.get('/', async (req, res) => {
     //Realizar a consulta no banco de dados usando SQL.
-    const result = await db.query('SELECT * FROM cliente');
+    const result = await db.query('SELECT * FROM produto');
 
     //Responde com os dados da consulta
     res.status(200).json(result.rows);
@@ -21,21 +21,21 @@ routes.get('/', async (req, res) => {
 //ROTA POST
 routes.post('/', async (req, res) => {
 //Extrair os valores recebidos por parâmetros
- const {nome, email, telefone, endereco, cidade, uf} = req.body;
+ const {nome, marca, preco, peso} = req.body;
 
- if(!nome || !email || !telefone || !endereco || !cidade || !uf){
+ if(!nome || !marca || !preco || !peso){
     return res.status(400).json({mensagem: 'Todos os campos são obrigatórios.'});
  }
 
  //Constrói a query inserção SQL
  const sql = `
-    INSERT INTO cliente (nome, email, telefone, endereco, cidade,uf)
-    VALUES ($1, $2, $3, $4, $5, $6)
+    INSERT INTO produto (nome, marca, preco, peso)
+    VALUES ($1, $2, $3, $4)
     RETURNING *
  `;
 
  //Valores qeu serão usado na inserção SQL
- const valores = [nome, email, telefone, endereco, cidade,uf];
+ const valores = [nome, marca, preco, peso];
 
  //Executa a operação no banco de dados
  const result = await db.query(sql, valores);
@@ -53,28 +53,27 @@ routes.put('/:id', async (req, res) => {
 
     //Verifica se o id foi informado
     if(!id){
-        return res.status(400).json({mensagem: 'id do cliente é obrigatório'});
+        return res.status(400).json({mensagem: 'id do produto é obrigatório'});
     }
 
     //Extrair as informações do corpo da requisição
-    const {nome, email, telefone, endereco, cidade, uf} = req.body;
+    const {nome, marca, preco, peso} = req.body;
 
     //Verifica se todos os campos estãos preenchidos
-    if(!nome || !email || !telefone || !endereco || !cidade || !uf ){
+    if(!nome || !marca || !preco || !peso ){
         return res.status(400).json({mensagem: 'Todos os campos são Obrigatórios.'});
     }
 
     //criação da query SQL de alteração no banco de dados
     const sql = `
-    UPDATE cliente
-    SET nome = $1 , email = $2 , telefone = $3 , 
-    endereco = $4 , cidade = $5 , uf = $6
-    WHERE id = $7
+    UPDATE produto
+    SET nome = $1 , marca = $2 , preco = $3 , peso = $4
+    WHERE id = $5
     RETURNING *
     `;
 
     //valores usado na query
-    const valores = [nome, email, telefone, endereco, cidade, uf, id];
+    const valores = [nome, marca, preco, peso, id];
 
     //Executa a atualização no banco de dados
     const result = await db.query(sql, valores);
@@ -82,7 +81,7 @@ routes.put('/:id', async (req, res) => {
     //Caso não tenha o id informado no banco
     //informa que o cliente não foi encontrado
     if(result.rows.length === 0){
-        return res.status(404).json({mensagem: 'Cliente não encontrado.'});
+        return res.status(404).json({mensagem: 'Produto não encontrado.'});
     }
 
     res.status(200).json(result.rows[0]);
@@ -96,12 +95,12 @@ const {id} = req.params;
 
 //Verifica se id existe
 if(!id){
-    return res.status(400).json({mensagem: 'O id do cliente é obrigatório'});
+    return res.status(400).json({mensagem: 'O id do produto é obrigatório'});
 }
 
 //Constrói a query SQL
 const sql = `
-DELETE FROM cliente
+DELETE FROM produto
 WHERE id = $1
 RETURNING *
 `;
@@ -115,11 +114,11 @@ const result = await db.query(sql, valores);
 //Verifica se o id existe
 //ou se ele já não foi deletado
 if(result.rows.length === 0) {
-    return res.status(404).json({mensagem: 'cliente não encontrado.'});
+    return res.status(404).json({mensagem: 'Produto não encontrado.'});
 }
 
 //Quando a requisação for realizada
-res.status(200).json({mensagem: `Cliente com ID ${id} foi excluído com sucesso.`});
+res.status(200).json({mensagem: `Produto com ID ${id} foi excluído com sucesso.`});
 });
 
 module.exports = routes;

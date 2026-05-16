@@ -19,6 +19,8 @@ const port = process.env.APP_PORT;
 
 //importando as informações das rotas cliente
 const clienteRotas = require('./routes/cliente');
+//importando as informações das rotas produto
+const produtoRotas = require('./routes/produto');
 
 //Definição de rota raiz "/"
 //Configuração do servidor
@@ -31,6 +33,7 @@ app.use(express.json());
 
 //Expor as rotas do servidor
 app.use('/cliente', clienteRotas);
+app.use('/produto', produtoRotas);
 
 //Inicio do servidor
 app.listen(port, hostname, async () =>{
